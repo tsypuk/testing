@@ -28,31 +28,46 @@ public class StudentRepositoryTest {
     @After
     public void tearDown() throws Exception {
         repository.deleteAll();
-        repository = null;
     }
 
     @Test
     public void save() throws Exception {
-        Student test = TestUtils.createStudent();
-        repository.save(test);
-        map.get(test.getId());
-        Assert.assertEquals(test, map.get(test.getId()));
+        Student actual = TestUtils.createStudent();
+        Student expected = repository.save(actual);
+        Assert.assertEquals(actual.getFirstName(), expected.getFirstName());
+        Assert.assertEquals(actual.getSecondName(), expected.getSecondName());
     }
 
     @Test
     public void get() throws Exception {
         Student expected = TestUtils.createStudent();
-        map.put(expected.getId(), expected);
         Student actual = repository.get(expected.getId());
         Assert.assertEquals(expected, actual);
     }
 
     @Test
     public void update() throws Exception {
-        Student expected = TestUtils.createStudent();
-        repository.update(expected);
-        Student actual = map.get(expected.getId());
+        Student test = TestUtils.createStudent();
+        Student expected = repository.update(test);
+        Student actual = repository.get(expected.getId());
         Assert.assertEquals(expected, actual);
     }
 
+    @Test
+    public void delete() {
+        Student test = TestUtils.createStudent();
+        repository.delete(test);
+        Student actual = repository.get(test.getId());
+        Assert.assertNull(actual);
+    }
+
+    @Test
+    public void deleteAll() {
+        repository.deleteAll();
+        Student test = TestUtils.createStudent();
+        Student actual = repository.get(test.getId());
+        Assert.assertNull(actual);
+
+
+    }
 }
