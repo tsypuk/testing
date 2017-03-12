@@ -2,31 +2,38 @@ package com.garrytrue.repository;
 
 
 import com.garrytrue.model.Student;
-import com.garrytrue.storage.IStorage;
+
+import java.util.Map;
 
 /**
  * Created by garrytrue on 12.03.17.
  */
-public class StudentRepository implements IRepository<Student> {
-    private final IStorage<Student> storage;
+public class StudentRepository implements CRUDRepository<Student> {
+    private final Map<Long, Student> inMemory;
 
-    public StudentRepository(IStorage<Student> storage) {
-        this.storage = storage;
+    public StudentRepository(Map<Long, Student> inMemory) {
+        this.inMemory = inMemory;
     }
+
 
     @Override
     public void save(Student data) {
-        storage.save(data);
+        inMemory.put(data.getId(), data);
     }
 
     @Override
     public Student get(long id) {
-        return storage.getById(id);
+        return inMemory.get(id);
     }
 
     @Override
     public void update(Student data) {
-        storage.updateById(data.getId(), data);
+        inMemory.replace(data.getId(), data);
+    }
+
+    @Override
+    public Student delete(Student data) {
+        return inMemory.remove(data.getId());
     }
 
 

@@ -8,13 +8,16 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.JUnit4;
 
 /**
  * Created by garrytrue on 12.03.17.
  */
+@RunWith(JUnit4.class)
 public class StudentRepositoryTest {
     private IStorage<Student> testStorage;
-    private IRepository<Student> repository;
+    private CRUDRepository<Student> repository;
 
     @Before
     public void setUp() throws Exception {
@@ -26,7 +29,6 @@ public class StudentRepositoryTest {
     public void tearDown() throws Exception {
         testStorage = null;
         repository = null;
-        // for pull request
     }
 
     @Test
