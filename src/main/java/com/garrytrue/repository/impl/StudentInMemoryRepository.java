@@ -1,4 +1,4 @@
-package com.garrytrue.repository.impls;
+package com.garrytrue.repository.impl;
 
 import com.garrytrue.model.Student;
 import com.garrytrue.repository.CRUDRepository;

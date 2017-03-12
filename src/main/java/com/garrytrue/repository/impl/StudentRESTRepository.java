@@ -1,4 +1,4 @@
-package com.garrytrue.repository.impls;
+package com.garrytrue.repository.impl;
 
 import com.garrytrue.model.Student;
 import com.garrytrue.repository.CRUDRepository;
@@ -8,8 +8,13 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 
 public class StudentRESTRepository implements CRUDRepository<Student> {
-    private final List<Student> restEmulator = new ArrayList<>();
+    private final List<Student> restEmulator;
     private final AtomicLong autoId = new AtomicLong();
+
+    public StudentRESTRepository(List<Student> list) {
+        this.restEmulator = list;
+        this.autoId.set(list.size());
+    }
 
     @Override
     public Student save(Student data) {
