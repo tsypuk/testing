@@ -5,11 +5,13 @@ package com.garrytrue.repository;
  */
 public interface CRUDRepository<T> {
 
-    void save(T data);
+    T save(T data);
 
     T get(long id);
 
-    void update(T data);
+    T update(T data);
 
-    T delete(T data);
+    void delete(T data);
+
+    void deleteAll();
 }

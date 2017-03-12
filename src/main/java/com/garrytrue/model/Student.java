@@ -4,18 +4,21 @@ package com.garrytrue.model;
  * Created by garrytrue on 12.03.17.
  */
 public class Student {
-    private final long id;
     private final String firstName;
     private final String secondName;
+    private long id;
 
-    public Student(long id, String firstName, String secondName) {
-        this.id = id;
+    public Student(String firstName, String secondName) {
         this.firstName = firstName;
         this.secondName = secondName;
     }
 
     public long getId() {
         return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public String getFirstName() {

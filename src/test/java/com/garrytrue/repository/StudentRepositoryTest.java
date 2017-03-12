@@ -21,18 +21,19 @@ public class StudentRepositoryTest {
 
     @Before
     public void setUp() throws Exception {
-        map = TestUtils.generateStudent(10);
-        repository = new StudentRepository(map);
+        map = TestUtils.generateStudents(10);
+        repository = new StudentInMemoryRepository(map);
     }
 
     @After
     public void tearDown() throws Exception {
+        repository.deleteAll();
         repository = null;
     }
 
     @Test
     public void save() throws Exception {
-        Student test = TestUtils.getStudent1();
+        Student test = TestUtils.createStudent();
         repository.save(test);
         map.get(test.getId());
         Assert.assertEquals(test, map.get(test.getId()));
@@ -40,7 +41,7 @@ public class StudentRepositoryTest {
 
     @Test
     public void get() throws Exception {
-        Student expected = TestUtils.getStudent1();
+        Student expected = TestUtils.createStudent();
         map.put(expected.getId(), expected);
         Student actual = repository.get(expected.getId());
         Assert.assertEquals(expected, actual);
@@ -48,7 +49,7 @@ public class StudentRepositoryTest {
 
     @Test
     public void update() throws Exception {
-        Student expected = TestUtils.getStudent1();
+        Student expected = TestUtils.createStudent();
         repository.update(expected);
         Student actual = map.get(expected.getId());
         Assert.assertEquals(expected, actual);
