@@ -2,8 +2,8 @@ package com.garrytrue;
 
 import com.garrytrue.model.Student;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by garrytrue on 12.03.17.
@@ -17,12 +17,12 @@ public final class TestUtils {
         return new Student(1, "One", "One");
     }
 
-    public static List<Student> generateStudent(int count) {
-        List<Student> list = new ArrayList<>();
+    public static Map<Long, Student> generateStudent(int count) {
+        Map<Long, Student> map = new HashMap<>();
         for (int i = 0; i < count; i++) {
-            list.add(new Student(i, "FirstName " + i, "LastName " + i));
+            map.put((long) i, new Student(i, "FirstName " + i, "LastName " + i));
         }
-        return list;
+        return map;
     }
 
 }
