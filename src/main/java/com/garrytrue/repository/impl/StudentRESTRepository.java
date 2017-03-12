@@ -1,29 +1,30 @@
-package com.garrytrue.repository;
+package com.garrytrue.repository.impls;
 
 import com.garrytrue.model.Student;
+import com.garrytrue.repository.CRUDRepository;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 
-/**
- * Created by garrytrue on 12.03.17.
- */
 public class StudentRESTRepository implements CRUDRepository<Student> {
-    private final List<Student> list = new ArrayList<>();
-    private final AtomicLong atomicLong = new AtomicLong();
+    private final List<Student> restEmulator = new ArrayList<>();
+    private final AtomicLong autoId = new AtomicLong();
 
     @Override
     public Student save(Student data) {
-        long id = atomicLong.incrementAndGet();
+        long id = autoId.incrementAndGet();
         data.setId(id);
-        list.add(data);
+        restEmulator.add(data);
         return data;
     }
 
     @Override
     public Student get(long id) {
-        return list.stream().filter(student -> student.getId() == id).findFirst().orElse(null);
+        return restEmulator.stream()
+                .filter(student -> student.getId() == id)
+                .findFirst()
+                .orElse(null);
     }
 
     @Override
@@ -33,11 +34,12 @@ public class StudentRESTRepository implements CRUDRepository<Student> {
 
     @Override
     public void delete(Student data) {
-        list.remove(data);
+        restEmulator.remove(data);
     }
 
     @Override
     public void deleteAll() {
-        list.clear();
+        restEmulator.clear();
+        autoId.set(0);
     }
 }
