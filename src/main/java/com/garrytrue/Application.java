@@ -1,6 +1,7 @@
 package com.garrytrue;
 
 import com.garrytrue.model.Student;
+import com.garrytrue.repository.RepositoryBuilder;
 import com.garrytrue.repository.impl.ChainedRepository;
 import com.garrytrue.repository.impl.StudentInMemoryRepository;
 import com.garrytrue.repository.impl.StudentRESTRepository;
@@ -15,8 +16,11 @@ public class Application {
 
         HashMap<Long, Student> storage = new HashMap<>();
         List<Student> restStorage = new ArrayList<>();
-        ChainedRepository<Student> restLayer = new ChainedRepository(new StudentRESTRepository(restStorage));
-        ChainedRepository<Student> inmemoryLayer = new ChainedRepository<>(new StudentInMemoryRepository(storage));
-        inmemoryLayer.setNextLayerRepository(restLayer);
+        StudentRESTRepository rest = new StudentRESTRepository(restStorage);
+        StudentInMemoryRepository memory = new StudentInMemoryRepository(storage);
+        ChainedRepository chainedRepo = new RepositoryBuilder()
+                .addToChain(memory)
+                .addToChain(rest)
+                .build();
     }
 }

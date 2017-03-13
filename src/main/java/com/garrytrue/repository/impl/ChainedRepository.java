@@ -5,14 +5,18 @@ import com.garrytrue.repository.CRUDRepository;
 public class ChainedRepository<T> implements CRUDRepository<T> {
 
     CRUDRepository<T> repository;
-    CRUDRepository<T> nextLayerRepository;
+    ChainedRepository<T> nextChain;
 
     public ChainedRepository(CRUDRepository<T> repository) {
         this.repository = repository;
     }
 
-    public void setNextLayerRepository(CRUDRepository<T> nextLayerRepository) {
-        this.nextLayerRepository = nextLayerRepository;
+    public void setNextChain(ChainedRepository<T> nextChain) {
+        this.nextChain = nextChain;
+    }
+
+    public ChainedRepository<T> getNextChain() {
+        return nextChain;
     }
 
     /**
@@ -21,7 +25,7 @@ public class ChainedRepository<T> implements CRUDRepository<T> {
     @Override
     public T save(T data) {
         repository.save(data);
-        return nextLayerRepository.save(data);
+        return nextChain.save(data);
     }
 
     /**
@@ -30,8 +34,8 @@ public class ChainedRepository<T> implements CRUDRepository<T> {
     @Override
     public T get(long id) {
         T result = repository.get(id);
-        if (result == null && nextLayerRepository != null) {
-            result = nextLayerRepository.get(id);
+        if (result == null && nextChain != null) {
+            result = nextChain.get(id);
         }
         return result;
     }
@@ -49,8 +53,8 @@ public class ChainedRepository<T> implements CRUDRepository<T> {
     @Override
     public void deleteAll() {
         repository.deleteAll();
-        if (nextLayerRepository != null) {
-            nextLayerRepository.deleteAll();
+        if (nextChain != null) {
+            nextChain.deleteAll();
         }
     }
 }

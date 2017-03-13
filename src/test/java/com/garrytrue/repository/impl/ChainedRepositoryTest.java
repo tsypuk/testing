@@ -2,6 +2,7 @@ package com.garrytrue.repository.impl;
 
 import com.garrytrue.TestUtils;
 import com.garrytrue.model.Student;
+import com.garrytrue.repository.RepositoryBuilder;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -17,12 +18,13 @@ public class ChainedRepositoryTest {
 
     @Before
     public void init() {
-        ChainedRepository<Student> restLayer = new ChainedRepository(
-                new StudentRESTRepository(TestUtils.generateStudentList(10)));
-        ChainedRepository<Student> inmemoryLayer = new ChainedRepository(
-                new StudentInMemoryRepository(TestUtils.generateStudents(3)));
-        inmemoryLayer.setNextLayerRepository(restLayer);
-        chainedRepository = inmemoryLayer;
+        StudentInMemoryRepository inmemoryRepo = new StudentInMemoryRepository(TestUtils.generateStudents(3));
+        StudentRESTRepository restRepo = new StudentRESTRepository(TestUtils.generateStudentList(10));
+        
+        chainedRepository = new RepositoryBuilder()
+                .addToChain(inmemoryRepo)
+                .addToChain(restRepo)
+                .build();
     }
 
     @Test
